@@ -19,7 +19,7 @@ jobs:
         command: apply -f ./porter.yaml
       env:
         PORTER_CLUSTER: "1"
-        PORTER_HOST: https://f337-160-72-72-58.ngrok-free.app
+        PORTER_HOST: https://86bb-160-72-72-58.ngrok-free.app
         PORTER_PROJECT: "1"
         PORTER_STACK_NAME: nginx
         PORTER_TAG: ${{ steps.vars.outputs.sha_short }}
