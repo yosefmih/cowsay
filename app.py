@@ -1,4 +1,5 @@
 from flask import Flask
+import concurrent.futures
 import random
 
 app = Flask(__name__)
@@ -16,16 +17,19 @@ status_codes = {
     10: 500,
 }
 
+def memory_consumer():
+    rand_one = random.randint(16, 32)
+    rand_two = random.randint(16, 32)
+    foo = ['bar' for _ in xrange((1000000 * (rand_one + rand_two)))]
+    del foo
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def hello_world(path):
+    with concurrent.futures.ProcessPoolExecutor(max_workers=1) as executor:
+        result = executor.submit(memory_consumer).result()
+
     status_code = status_codes[random.randint(1, 10)]
-
-    rand_one = random.randint(1, 16)
-    rand_two = random.randint(1, 16)
-    some_str = ' ' * (1000000 * (rand_one + rand_two))
-    del some_str
-
     if status_code == 301:
         return redirect("http://www.example.com", code=302)
 
