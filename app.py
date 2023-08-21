@@ -35,7 +35,7 @@ def hello_world(path):
     if status_code == 301:
         return redirect("http://www.example.com", code=302)
 
-    return f"<p>Hello, World! Welcome to {path}</p>", status_code
+    return f"<p>Hello, World! Welcome to {path} ({status_code})</p>", status_code
 
 if __name__ == '__main__':
     app.run()
