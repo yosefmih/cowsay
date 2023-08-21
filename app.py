@@ -26,8 +26,10 @@ def memory_consumer():
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def hello_world(path):
+    futures = []
     with concurrent.futures.ProcessPoolExecutor(max_workers=1) as executor:
-        result = executor.submit(memory_consumer).result()
+        futures.append(executor.submit(memory_consumer))
+        concurrent.futures.wait(futures)
 
     status_code = status_codes[random.randint(1, 10)]
     if status_code == 301:
