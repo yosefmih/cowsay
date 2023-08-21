@@ -20,7 +20,7 @@ status_codes = {
 def memory_consumer():
     rand_one = random.randint(16, 32)
     rand_two = random.randint(16, 32)
-    foo = ['bar' for _ in xrange((1000000 * (rand_one + rand_two)))]
+    foo = ['bar' for _ in range((1000000 * (rand_one + rand_two)))]
     del foo
 
 @app.route('/', defaults={'path': ''})
