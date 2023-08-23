@@ -1,3 +1,7 @@
+---
 apps:
   my-app-web:
-    run: "flask --app app run --host 0.0.0.0 --port $PORT"
+    run: "flask --app web run --host 0.0.0.0 --port $PORT"
+
+  my-app-wkr:
+    run: "python worker.py"

@@ -1,6 +1,12 @@
-from flask import Flask
-import concurrent.futures
+"""
+starts a web process
+"""
 import random
+
+from flask import Flask
+from flask import redirect
+
+from shared import consume_memory
 
 app = Flask(__name__)
 
@@ -17,19 +23,14 @@ status_codes = {
     10: 500,
 }
 
-def memory_consumer():
-    rand_one = random.randint(16, 32)
-    rand_two = random.randint(16, 32)
-    foo = ['bar' for _ in range((1000000 * (rand_one + rand_two)))]
-    del foo
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
-def hello_world(path):
-    futures = []
-    with concurrent.futures.ProcessPoolExecutor(max_workers=1) as executor:
-        futures.append(executor.submit(memory_consumer))
-        concurrent.futures.wait(futures)
+def index(path):
+    """
+    default catch-all path
+    """
+    consume_memory()
 
     status_code = status_codes[random.randint(1, 10)]
     if status_code == 301:
