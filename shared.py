@@ -20,8 +20,8 @@ def memory_consumer():
     """
     allocates a variable with a random size
     """
-    rand_one = random.randint(16, 20)
-    rand_two = random.randint(16, 20)
+    rand_one = random.randint(8, 12)
+    rand_two = random.randint(8, 12)
     placeholder = ["bar" for _ in range((1000000 * (rand_one + rand_two)))]
     del placeholder
 
