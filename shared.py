@@ -21,8 +21,8 @@ def memory_consumer():
     """
     allocates a variable with a random size
     """
-    rand_one = random.randint(16, 32)
-    rand_two = random.randint(16, 32)
+    rand_one = random.randint(16, 20)
+    rand_two = random.randint(16, 20)
     placeholder = ["bar" for _ in range((1000000 * (rand_one + rand_two)))]
     del placeholder
 
@@ -47,7 +47,8 @@ def cpu_consumer(interval=2, utilization=None):
     Generate a utilization % for a duration of interval seconds
     """
     if utilization is None:
-        utilization = random.randint(1, 5)
+        utilization = random.randint(4, 5)
+
     start_time = time.time()
     for _ in range(0, int(interval)):
         while time.time() - start_time < utilization / 100.0:
