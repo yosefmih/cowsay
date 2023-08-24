@@ -3,6 +3,7 @@ starts a web process
 """
 import random
 
+from cowsay import cowsay
 from flask import Flask
 from flask import redirect
 
@@ -38,7 +39,10 @@ def index(path):
     if status_code == 301:
         return redirect("http://www.example.com", code=302)
 
-    return f"<p>Hello, World! Welcome to {path} ({status_code})</p>", status_code
+    cow = cowsay.get_random_cow()
+    message = f"Hello, World! Welcome to /{path} ({status_code})"
+
+    return cowsay(message, cow=cow), status_code
 
 
 if __name__ == "__main__":
