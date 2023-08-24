@@ -2,7 +2,6 @@ import concurrent.futures
 import math
 import multiprocessing
 import random
-import sys
 import time
 
 
