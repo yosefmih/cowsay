@@ -6,6 +6,7 @@ import random
 from flask import Flask
 from flask import redirect
 
+from shared import consume_cpu
 from shared import consume_memory
 
 app = Flask(__name__)
@@ -24,12 +25,13 @@ status_codes = {
 }
 
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
 def index(path):
     """
     default catch-all path
     """
+    consume_cpu()
     consume_memory()
 
     status_code = status_codes[random.randint(1, 10)]
@@ -38,5 +40,6 @@ def index(path):
 
     return f"<p>Hello, World! Welcome to {path} ({status_code})</p>", status_code
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app.run()
