@@ -33,15 +33,15 @@ def consume_cpu():
     """
     processes = []
     for _ in range(multiprocessing.cpu_count()):
-        p = multiprocessing.Process(target=cpu_consumer)
-        p.start()
-        processes.append(p)
+        process = multiprocessing.Process(target=cpu_consumer)
+        process.start()
+        processes.append(process)
 
     for process in processes:
         process.join()
 
 
-def cpu_consumer(interval=2, utilization=None):
+def cpu_consumer(interval=1, utilization=None):
     """
     Generate a utilization % for a duration of interval seconds
     """
