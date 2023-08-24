@@ -46,7 +46,7 @@ def cpu_consumer(interval=1, utilization=None):
     Generate a utilization % for a duration of interval seconds
     """
     if utilization is None:
-        utilization = random.randint(4, 5)
+        utilization = random.randint(1, 2)
 
     start_time = time.time()
     for _ in range(0, int(interval)):
