@@ -55,10 +55,15 @@ def redis_path():
     port = int(os.getenv("REDIS_PORT"))
     password = os.getenv("REDIS_PASS")
     connection = redis.Redis(
-        host=host, port=port, password=password, decode_responses=True
+        host=host,
+        port=port,
+        password=password,
+        decode_responses=True,
+        ssl=True,
+        ssl_cert_reqs="none",
     )
     connection.set("foo", "bar")
-    html = f"<pre><code>{connection.get('foo')}</code></pre>"
+    html = f"<pre><code>ping redis with tls: {connection.ping()}</code></pre>"
     return html, 200
 
 
