@@ -4,6 +4,7 @@ starts a web process
 import os
 import random
 
+import pg8000.native
 import redis
 from flask import Flask, redirect
 
@@ -64,6 +65,26 @@ def redis_path():
     )
     connection.set("foo", "bar")
     html = f"<pre><code>ping redis with tls: {connection.ping()}</code></pre>"
+    return html, 200
+
+
+@app.route("/postgres")
+def postgres_path():
+    """
+    tests postgres
+    """
+
+    host = os.getenv("DB_HOST")
+    port = int(os.getenv("DB_PORT"))
+    password = os.getenv("DB_PASS")
+    username = os.getenv("DB_USER")
+    con = pg8000.native.Connection(
+        user=username, password=password, host=host, port=port
+    )
+    for row in con.run("SELECT 1"):
+        html = f"<pre><code>ping redis with tls: {row}</code></pre>"
+
+    con.close()
     return html, 200
 
 
