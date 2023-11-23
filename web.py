@@ -1,15 +1,14 @@
 """
 starts a web process
 """
+import os
 import random
 
-from cowsay import cowsay
-from cowsay import get_random_cow
-from flask import Flask
-from flask import redirect
+import redis
+from flask import Flask, redirect
 
-from shared import consume_cpu
-from shared import consume_memory
+from cowsay import cowsay, get_random_cow
+from shared import consume_cpu, consume_memory
 
 app = Flask(__name__)
 
@@ -44,6 +43,23 @@ def index(path):
     message = f"Hello, World! Welcome to /{path} ({status_code})"
     html = f"<pre><code>{cowsay(message, cow=cow)}</code></pre>"
     return html, status_code
+
+
+@app.route("/redis")
+def redis_path():
+    """
+    tests redis
+    """
+
+    host = os.getenv("REDIS_HOST")
+    port = int(os.getenv("REDIS_PORT"))
+    password = os.getenv("REDIS_PASS")
+    connection = redis.Redis(
+        host=host, port=port, password=password, decode_responses=True
+    )
+    connection.set("foo", "bar")
+    html = f"<pre><code>{connection.get('foo')}</code></pre>"
+    return html, 200
 
 
 if __name__ == "__main__":
