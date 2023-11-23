@@ -85,7 +85,7 @@ def postgres_path():
     ssl_context.load_verify_locations("global-bundle.pem")
 
     con = pg8000.native.Connection(
-        user=username, password=password, host=host, port=port
+        user=username, password=password, host=host, port=port, ssl_context=ssl_context
     )
     for row in con.run("SELECT 1"):
         html = f"<pre><code>ping redis with tls: {row}</code></pre>"
