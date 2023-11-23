@@ -1,2 +1,3 @@
-python-cowsay
 Flask
+python-cowsay
+redis[hiredis]
