@@ -3,6 +3,7 @@ starts a web process
 """
 import os
 import random
+import ssl
 
 import pg8000.native
 import redis
@@ -78,6 +79,11 @@ def postgres_path():
     port = int(os.getenv("DB_PORT"))
     password = os.getenv("DB_PASS")
     username = os.getenv("DB_USER")
+
+    ssl_context = ssl.create_default_context()
+    ssl_context.verify_mode = ssl.CERT_REQUIRED
+    ssl_context.load_verify_locations("global-bundle.pem")
+
     con = pg8000.native.Connection(
         user=username, password=password, host=host, port=port
     )
