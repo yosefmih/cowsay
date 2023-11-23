@@ -88,7 +88,7 @@ def postgres_path():
         user=username, password=password, host=host, port=port, ssl_context=ssl_context
     )
     for row in con.run("SELECT 1"):
-        html = f"<pre><code>ping redis with tls: {row}</code></pre>"
+        html = f"<pre><code>connet to postgres with ssl: {row}</code></pre>"
 
     con.close()
     return html, 200
