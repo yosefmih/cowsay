@@ -64,8 +64,7 @@ def handle_signal(signum, _):
     allowing other processes to stop doing work
     """
     print(f"handling signal {signum}")
-    filename = f"{tempfile.gettempdir()}/web-{os.getpgid()}.exit"
-    with open(filename, "wb", encoding="utf-8") as f:
+    with open(exit_file(), "wb", encoding="utf-8") as f:
         f.write(signum)
 
 
@@ -73,5 +72,11 @@ def is_exiting():
     """
     Checks if the exit sentinal file exists and returns true if so
     """
-    filename = f"{tempfile.gettempdir()}/web-{os.getpgid()}.exit"
-    return os.path.isfile(filename)
+    return os.path.isfile(exit_file())
+
+
+def exit_file():
+    """
+    Returns the path to the exit file
+    """
+    return f"{tempfile.gettempdir()}/web-{os.getpid()}.exit"
