@@ -3,14 +3,16 @@ starts a web process
 """
 import os
 import random
+import signal
 import ssl
+import tempfile
 
 import pg8000.native
 import redis
 from flask import Flask, redirect
 
 from cowsay import cowsay, get_random_cow
-from shared import consume_cpu, consume_memory
+from shared import consume_cpu, consume_memory, handle_signal, is_exiting
 
 app = Flask(__name__)
 
@@ -94,5 +96,16 @@ def postgres_path():
     return html, 200
 
 
+@app.route("/status")
+def status_path():
+    """
+    Show status page and handle healthchecks correctly
+    """
+    if is_exiting():
+        return "service shutting down", 503
+    return "", 200
+
+
 if __name__ == "__main__":
+    signal.signal(signal.SIGTERM, handle_signal)
     app.run()

@@ -1,7 +1,9 @@
 import concurrent.futures
 import math
 import multiprocessing
+import os
 import random
+import tempfile
 import time
 
 
@@ -54,3 +56,22 @@ def cpu_consumer(interval=1, utilization=None):
             _ = math.sqrt(64 * 64 * 64 * 64 * 64)
         time.sleep(1 - utilization / 100.0)
         start_time += 1
+
+
+def handle_signal(signum, _):
+    """
+    Write an exit file for the current process on SIGTERM
+    allowing other processes to stop doing work
+    """
+    print(f"handling signal {signum}")
+    filename = f"{tempfile.gettempdir()}/web-{os.getpgid()}.exit"
+    with open(filename, "wb", encoding="utf-8") as f:
+        f.write(signum)
+
+
+def is_exiting():
+    """
+    Checks if the exit sentinal file exists and returns true if so
+    """
+    filename = f"{tempfile.gettempdir()}/web-{os.getpgid()}.exit"
+    return os.path.isfile(filename)
