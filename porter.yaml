@@ -2,6 +2,9 @@
 apps:
   my-app-web:
     run: "flask --app web run --host 0.0.0.0 --port $PORT"
+    healthCheck:
+      enabled: true
+      httpPath: /status
 
   my-app-wkr:
     run: "python worker.py"
