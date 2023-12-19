@@ -1,7 +1,7 @@
 "on":
   push:
     branches:
-    - main
+    - circleci
 name: Deploy to circleci
 jobs:
   porter-deploy:
