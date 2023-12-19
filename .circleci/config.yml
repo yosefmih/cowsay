@@ -17,7 +17,9 @@ jobs:
             /bin/bash -c "$(curl -fsSL https://install.porter.run)"
       - run:
           name: "Deploy stack"
-          command: "porter apply -f ./porter.yaml"
+          command: |
+            env
+            porter apply -f ./porter.yaml
           environment:
             PORTER_CLUSTER: "1"
             PORTER_HOST: https://newt-worthy-gazelle.ngrok-free.app
