@@ -8,13 +8,15 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Set Github tag
-          command: |
-            echo "export sha_short=$(git rev-parse --short HEAD)" >> $BASH_ENV
-      - run:
           name: "Setup porter"
           command: |
             /bin/bash -c "$(curl -fsSL https://install.porter.run)"
+      - run:
+          name: Set Porter Environment Variables
+          command: |
+            echo "export PORTER_PR_NUMBER=${CIRCLE_PULL_REQUEST##*/}" >> $BASH_ENV
+            echo "export PORTER_TAG=$(git rev-parse --short HEAD)" >> $BASH_ENV
+            echo "export PORTER_TOKEN=$PORTER_STACK_1_1" >> $BASH_ENV
       - run:
           name: "Deploy stack"
           command: |
@@ -23,11 +25,8 @@ jobs:
           environment:
             PORTER_CLUSTER: "1"
             PORTER_HOST: https://newt-worthy-gazelle.ngrok-free.app
-            PORTER_PR_NUMBER: "$CIRCLE_PR_NUMBER"
             PORTER_PROJECT: "1"
             PORTER_STACK_NAME: circleci
-            PORTER_TAG: "$sha_short"
-            PORTER_TOKEN: "$PORTER_TOKEN_1_1"
 
 workflows:
   porter-deploy-workflow:
