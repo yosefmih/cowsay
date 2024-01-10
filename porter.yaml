@@ -17,13 +17,21 @@ services:
   cpuCores: 0.19
   ramMegabytes: 400
   terminationGracePeriodSeconds: 30
-- name: my-app-job
+- name: my-app-cron
   run: python cron.py
   type: job
   cpuCores: 0.19
   ramMegabytes: 400
   terminationGracePeriodSeconds: 30
   cron: 0 */6 * * *
+  timeoutSeconds: 3600
+- name: my-app-job
+  run: python cron.py
+  type: job
+  cpuCores: 0.19
+  ramMegabytes: 400
+  terminationGracePeriodSeconds: 30
+  suspendCron: true
   timeoutSeconds: 3600
 build:
   context: ./
