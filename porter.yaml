@@ -1,10 +1,31 @@
 ---
-apps:
-  my-app-web:
-    run: "flask --app web run --host 0.0.0.0 --port $PORT"
-    healthCheck:
-      enabled: true
-      httpPath: /status
-
-  my-app-wkr:
-    run: "python worker.py"
+version: v2
+name: cowsay
+services:
+- name: my-app-web
+  run: flask --app web run --host 0.0.0.0 --port $PORT
+  type: web
+  instances: 1
+  cpuCores: 0.19
+  ramMegabytes: 400
+  terminationGracePeriodSeconds: 30
+  port: 3000
+- name: my-app-wkr
+  run: python worker.py
+  type: worker
+  instances: 1
+  cpuCores: 0.19
+  ramMegabytes: 400
+  terminationGracePeriodSeconds: 30
+- name: my-app-job
+  run: python cron.py
+  type: job
+  cpuCores: 0.19
+  ramMegabytes: 400
+  terminationGracePeriodSeconds: 30
+  cron: 0 */6 * * *
+  timeoutSeconds: 3600
+build:
+  context: ./
+  method: pack
+  builder: heroku/buildpacks:20
